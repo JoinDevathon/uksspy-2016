@@ -1,8 +1,6 @@
 package org.devathon.contest2016.machines;
 
-import com.google.common.collect.ImmutableMap;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -10,7 +8,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Dispenser;
 import org.bukkit.block.Hopper;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -20,6 +17,7 @@ import org.devathon.contest2016.Machine;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 
 public class Packager extends Machine {
@@ -40,8 +38,9 @@ public class Packager extends Machine {
     }};
 
     private String name;
+    private UUID uuid;
+
     private Location loc;
-    private List<Block> machineBlocks = new ArrayList<>();
 
     private Inventory inputInv;
     private Inventory outputInv;
@@ -54,10 +53,15 @@ public class Packager extends Machine {
         loc = null;
     }
 
-    public Packager(Location loc){
-        super(loc);
+    public Packager(UUID uuid, Location loc){
+        super(uuid, loc);
         this.loc = loc;
     }
+
+    public Packager(UUID uuid, Location loc, List<Block> blocks){
+        super(uuid,loc,blocks);
+    }
+
 
     /**
      * Unfortunately, this does not adhere to any protection plugins yet (e.g. WorldGuard).
@@ -67,23 +71,23 @@ public class Packager extends Machine {
 
         b.setType(Material.DISPENSER);
         outputInv = ((Dispenser) b.getState()).getInventory();
-        machineBlocks.add(b);
+        addBlock(b);
 
         b = b.getRelative(BlockFace.UP);
 
         b.setType(Material.PISTON_BASE);
         b.setData((byte) 0);
-        machineBlocks.add(b);
+        addBlock(b);
 
         b = b.getRelative(BlockFace.UP);
 
         b.setType(Material.HOPPER);
         inputInv = ((Hopper) b.getState()).getInventory();
-        machineBlocks.add(b);
+        addBlock(b);
     }
 
     public void deleteMachine(){
-        for(Block block : machineBlocks) block.setType(Material.AIR);
+        for(Block block : getBlocks()) block.setType(Material.AIR);
 
         ItemStack itemStack = new ItemStack(Material.IRON_INGOT, 1);
         ItemMeta im = itemStack.getItemMeta();
@@ -112,15 +116,5 @@ public class Packager extends Machine {
                 }
             }
         }
-    }
-
-    @Override
-    public boolean isMachine(Block block) {
-        return machineBlocks.contains(block);
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 }

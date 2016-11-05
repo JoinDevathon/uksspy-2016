@@ -17,22 +17,10 @@ import org.devathon.contest2016.Machine;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class Unpacker extends Machine{
 
-    /*
-            put(new ItemStack(Material.IRON_INGOT, 9), Material.IRON_BLOCK);
-        put(new ItemStack(Material.GOLD_INGOT, 9), Material.GOLD_BLOCK);
-        put(new ItemStack(Material.DIAMOND, 9), Material.DIAMOND_BLOCK);
-        put(new ItemStack(Material.EMERALD, 9), Material.EMERALD_BLOCK);
-        put(new ItemStack(Material.COAL, 9), Material.COAL_BLOCK);
-        put(new ItemStack(Material.INK_SACK, 9, (byte) 4), Material.LAPIS_BLOCK);
-        put(new ItemStack(Material.REDSTONE, 9), Material.REDSTONE_BLOCK);
-        put(new ItemStack(Material.CLAY_BALL, 4), Material.CLAY);
-        put(new ItemStack(Material.STRING, 9), Material.WOOL);
-        put(new ItemStack(Material.WHEAT, 9), Material.HAY_BLOCK);
-        put(new ItemStack(Material.NETHER_BRICK_ITEM, 4), Material.NETHER_BRICK);
-     */
     private static final HashMap<Material, ItemStack> unpackerItems = new HashMap<Material, ItemStack>(){{
         put(Material.IRON_BLOCK, new ItemStack(Material.IRON_INGOT, 9));
         put(Material.GOLD_BLOCK, new ItemStack(Material.GOLD_INGOT, 9));
@@ -49,8 +37,9 @@ public class Unpacker extends Machine{
     }};
 
     private String name;
+    private UUID uuid;
+
     private Location loc;
-    private List<Block> machineBlocks = new ArrayList<>();
 
     private Inventory inputInv;
     private Inventory outputInv;
@@ -63,9 +52,13 @@ public class Unpacker extends Machine{
         loc = null;
     }
 
-    public Unpacker(Location loc){
-        super(loc);
+    public Unpacker(UUID uuid, Location loc){
+        super(uuid, loc);
         this.loc = loc;
+    }
+
+    public Unpacker(UUID uuid, Location loc, List<Block> blocks){
+        super(uuid,loc,blocks);
     }
 
     /**
@@ -76,23 +69,23 @@ public class Unpacker extends Machine{
 
         b.setType(Material.DISPENSER);
         outputInv = ((Dispenser) b.getState()).getInventory();
-        machineBlocks.add(b);
+        addBlock(b);
 
         b = b.getRelative(BlockFace.UP);
 
         b.setType(Material.PISTON_STICKY_BASE);
         b.setData((byte) 1);
-        machineBlocks.add(b);
+        addBlock(b);
 
         b = b.getRelative(BlockFace.UP);
 
         b.setType(Material.HOPPER);
         inputInv = ((Hopper) b.getState()).getInventory();
-        machineBlocks.add(b);
+        addBlock(b);
     }
 
     public void deleteMachine(){
-        for(Block block : machineBlocks) block.setType(Material.AIR);
+        for(Block block : getBlocks()) block.setType(Material.AIR);
 
         ItemStack itemStack = new ItemStack(Material.IRON_INGOT, 1);
         ItemMeta im = itemStack.getItemMeta();
@@ -119,16 +112,5 @@ public class Unpacker extends Machine{
                 }
             }
         }
-    }
-
-
-    @Override
-    public boolean isMachine(Block block) {
-        return machineBlocks.contains(block);
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 }

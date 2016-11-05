@@ -7,18 +7,37 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public abstract class Machine {
 
 
     private String name;
+    private UUID uuid;
+    private Location loc;
+    private List<Block> machineBlocks;
 
-    public Machine(){
+    public Machine(){}
 
+    public Machine(String name){
+        this.name = name;
+        machineBlocks = new ArrayList<>();
     }
 
-    public Machine(Location loc){
-
+    public Machine(UUID uuid, Location loc){
+        this.uuid = uuid;
+        this.loc = loc;
+        machineBlocks = new ArrayList<>();
     }
+
+    public Machine(UUID uuid, Location loc, List<Block> blocks){
+        this.uuid = uuid;
+        this.loc = loc;
+        this.machineBlocks = blocks;
+    }
+
 
     public abstract void createMachine(Player p);
 
@@ -26,10 +45,32 @@ public abstract class Machine {
 
     public abstract void onTick(int tick);
 
-    public abstract boolean isMachine(Block block);
+    public boolean isMachine(Block block) {
+        return getBlocks().contains(block);
+    }
+
+    public Location getLoc(){
+        return loc;
+    }
+
+    public  List<Block> getBlocks(){
+        return machineBlocks;
+    }
+
+    public void setBlocks(List<Block> blocks){
+        machineBlocks = blocks;
+    }
+
+    public void addBlock(Block b){
+        machineBlocks.add(b);
+    }
 
     public String getName(){
         return name;
+    }
+
+    public UUID getUuid(){
+        return uuid;
     }
 
     public boolean hasRoom(Inventory inv, ItemStack itemStack){

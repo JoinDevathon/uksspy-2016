@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.UUID;
 
 public class ListenerClass implements Listener{
 
@@ -31,7 +32,7 @@ public class ListenerClass implements Listener{
             plugin.machinesTypes.stream().filter(machine -> ChatColor.stripColor(item.getItemMeta().getDisplayName()).equals(machine.getName())).forEach(machine -> {
                 try {
 
-                    Machine newMachine = machine.getClass().getConstructor(Location.class).newInstance(event.getClickedBlock().getLocation().add(0, 1, 0));
+                    Machine newMachine = machine.getClass().getConstructor(UUID.class, Location.class).newInstance(UUID.randomUUID(), event.getClickedBlock().getLocation().add(0, 1, 0));
                     newMachine.createMachine(event.getPlayer());
                     plugin.machines.add(newMachine);
 
