@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.devathon.contest2016.machines.Packager;
 import org.devathon.contest2016.machines.Unpacker;
+import org.devathon.contest2016.storage.MachineLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class UltimateMachines extends JavaPlugin {
         setupMachineTypes();
 
         new ListenerClass(this);
+        new MachineLoader(this);
 
         machineTask();
     }
