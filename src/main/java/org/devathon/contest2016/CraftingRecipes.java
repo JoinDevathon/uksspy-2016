@@ -8,9 +8,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class CraftingRecipes {
 
-    private DevathonPlugin plugin;
+    private UltimateMachines plugin;
 
-    public CraftingRecipes(DevathonPlugin plugin){
+    public CraftingRecipes(UltimateMachines plugin){
         this.plugin = plugin;
     }
 

@@ -8,7 +8,7 @@ import org.devathon.contest2016.machines.Unpacker;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DevathonPlugin extends JavaPlugin {
+public class UltimateMachines extends JavaPlugin {
 
 
     private int tick = 0;

@@ -15,9 +15,9 @@ import java.lang.reflect.InvocationTargetException;
 
 public class ListenerClass implements Listener{
 
-    private DevathonPlugin plugin;
+    private UltimateMachines plugin;
 
-    public ListenerClass(DevathonPlugin plugin){
+    public ListenerClass(UltimateMachines plugin){
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
