@@ -6,7 +6,7 @@ public class DevathonPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // put your enable code here
+        System.out.println("test");
     }
 
     @Override
