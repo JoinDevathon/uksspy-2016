@@ -117,4 +117,9 @@ public class Packager extends Machine {
             }
         }
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }

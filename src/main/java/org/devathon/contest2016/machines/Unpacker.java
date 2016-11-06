@@ -113,4 +113,9 @@ public class Unpacker extends Machine{
             }
         }
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }

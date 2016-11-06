@@ -1,6 +1,8 @@
 package org.devathon.contest2016;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.devathon.contest2016.machines.Packager;
 import org.devathon.contest2016.machines.Unpacker;
@@ -8,6 +10,7 @@ import org.devathon.contest2016.storage.MachineLoader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class UltimateMachines extends JavaPlugin {
 
@@ -40,6 +43,17 @@ public class UltimateMachines extends JavaPlugin {
             for(Machine machine : machines) machine.onTick(tick);
             tick++;
         },1,1);
+    }
+
+    //Gave up on trying to do this with reflection
+    public Machine getMachine(String type, UUID uuid, Location loc, List<Block> blocks){
+        if(type.equalsIgnoreCase("packager")){
+            return new Packager(uuid, loc, blocks);
+        }else if(type.equalsIgnoreCase("unpacker")){
+            return new Unpacker(uuid, loc, blocks);
+        }
+
+        return null;
     }
 
     @Override

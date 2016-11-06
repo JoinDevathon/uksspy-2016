@@ -70,26 +70,21 @@ public class MachineLoader implements Listener {
             for (File file : chunkFolder.listFiles()) {
                 YamlConfiguration conf = YamlConfiguration.loadConfiguration(file);
 
-                String type = conf.getString("type");
+                String fileName = file.getName();
+
+                final String type = conf.getString("type");
                 int loc_x = conf.getInt("location.x");
                 int loc_y = conf.getInt("location.y");
                 int loc_z = conf.getInt("location.z");
                 List<String> machineBlocks = conf.getStringList("machineBlocks");
                 List<Block> blocks = machineBlocks.stream().map(blockStr -> StorageUtil.desterilizeLocation(blockStr, world).getBlock()).collect(Collectors.toList());
 
+                file.delete();
+
                 Bukkit.getScheduler().runTask(plugin, () ->{
-                    try{
 
-                    Machine machine = (Machine) Class.forName(type).getConstructor(UUID.class, Location.class, List.class).newInstance(UUID.randomUUID(), new Location(world, loc_x, loc_y, loc_z), blocks);
-                    plugin.machines.add(machine);
-
-                    } catch (InstantiationException
-                            | IllegalAccessException
-                            | InvocationTargetException
-                            | NoSuchMethodException
-                            | ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    Machine machine = plugin.getMachine(type, UUID.fromString(fileName), new Location(world, loc_x, loc_y, loc_z), blocks);
+                    if(machine != null) plugin.machines.add(machine);
                 });
             }
         });
@@ -99,6 +94,7 @@ public class MachineLoader implements Listener {
         File chunkFolder = new File(machineFolder + File.separator + chunk.getWorld().getName() + File.separator + chunk.getX() + " " + chunk.getZ());
 
         List<Machine> machinesInChunk = plugin.machines.stream().filter(machine -> machine.getLoc().getChunk().equals(chunk)).collect(Collectors.toList());
+        if(machinesInChunk.size() > 0) System.out.println("Saved " + machinesInChunk.size() + " machines in chunk " + chunk);
         plugin.machines.removeAll(machinesInChunk);
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
@@ -106,7 +102,7 @@ public class MachineLoader implements Listener {
                 File file = new File(chunkFolder + File.separator + machine.getUuid() + ".yml");
                 YamlConfiguration conf = YamlConfiguration.loadConfiguration(file);
 
-                conf.set("type",machine.getClass());
+                conf.set("type", machine.getClass().getName());
 
                 conf.set("location.x", machine.getLoc().getBlockX());
                 conf.set("location.y", machine.getLoc().getBlockY());
