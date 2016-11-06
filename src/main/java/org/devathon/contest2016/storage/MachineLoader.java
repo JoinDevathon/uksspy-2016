@@ -70,7 +70,7 @@ public class MachineLoader implements Listener {
             for (File file : chunkFolder.listFiles()) {
                 YamlConfiguration conf = YamlConfiguration.loadConfiguration(file);
 
-                String fileName = file.getName();
+                String fileName = file.getName().split("\\.")[0];
 
                 final String type = conf.getString("type");
                 int loc_x = conf.getInt("location.x");

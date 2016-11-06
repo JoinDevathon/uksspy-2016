@@ -37,9 +37,6 @@ public class Unpacker extends Machine{
     }};
 
     private String name;
-    private UUID uuid;
-
-    private Location loc;
 
     private Inventory inputInv;
     private Inventory outputInv;
@@ -49,23 +46,22 @@ public class Unpacker extends Machine{
      */
     public Unpacker(){
         name = "Unpacker";
-        loc = null;
     }
 
     public Unpacker(UUID uuid, Location loc){
         super(uuid, loc);
-        this.loc = loc;
     }
 
     public Unpacker(UUID uuid, Location loc, List<Block> blocks){
         super(uuid,loc,blocks);
+        createMachine(null);
     }
 
     /**
      * Unfortunately, this does not adhere to any protection plugins yet (e.g. WorldGuard).
      */
     public void createMachine(Player p) {
-        Block b = loc.getBlock();
+        Block b = getLoc().getBlock();
 
         b.setType(Material.DISPENSER);
         outputInv = ((Dispenser) b.getState()).getInventory();
@@ -91,7 +87,7 @@ public class Unpacker extends Machine{
         ItemMeta im = itemStack.getItemMeta();
         im.setDisplayName(ChatColor.BLUE + "Unpacker");
         itemStack.setItemMeta(im);
-        loc.getWorld().dropItemNaturally(loc, itemStack);
+        getLoc().getWorld().dropItemNaturally(getLoc(), itemStack);
     }
 
     public void onTick(int tick){
@@ -105,8 +101,8 @@ public class Unpacker extends Machine{
                     System.out.println(unpackerItems.get(m));
                     outputInv.addItem(unpackerItems.get(m).clone());
 
-                    loc.getWorld().playSound(loc, Sound.BLOCK_PISTON_EXTEND, 1.0F, 1.3F);
-                    loc.getWorld().playSound(loc, Sound.BLOCK_ANVIL_LAND, 0.5F, 0.7F);
+                    getLoc().getWorld().playSound(getLoc(), Sound.BLOCK_PISTON_EXTEND, 1.0F, 1.3F);
+                    getLoc().getWorld().playSound(getLoc(), Sound.BLOCK_ANVIL_LAND, 0.5F, 0.7F);
 
                     break; //Preform only one operation
                 }

@@ -40,8 +40,6 @@ public class Packager extends Machine {
     private String name;
     private UUID uuid;
 
-    private Location loc;
-
     private Inventory inputInv;
     private Inventory outputInv;
 
@@ -50,16 +48,15 @@ public class Packager extends Machine {
      */
     public Packager(){
         name = "Packager";
-        loc = null;
     }
 
     public Packager(UUID uuid, Location loc){
         super(uuid, loc);
-        this.loc = loc;
     }
 
     public Packager(UUID uuid, Location loc, List<Block> blocks){
         super(uuid,loc,blocks);
+        createMachine(null);
     }
 
 
@@ -67,7 +64,7 @@ public class Packager extends Machine {
      * Unfortunately, this does not adhere to any protection plugins yet (e.g. WorldGuard).
      */
     public void createMachine(Player p) {
-        Block b = loc.getBlock();
+        Block b = getLoc().getBlock();
 
         b.setType(Material.DISPENSER);
         outputInv = ((Dispenser) b.getState()).getInventory();
@@ -93,7 +90,7 @@ public class Packager extends Machine {
         ItemMeta im = itemStack.getItemMeta();
         im.setDisplayName(ChatColor.BLUE + "Packager");
         itemStack.setItemMeta(im);
-        loc.getWorld().dropItemNaturally(loc, itemStack);
+        getLoc().getWorld().dropItemNaturally(getLoc(), itemStack);
     }
 
     public void onTick(int tick){
@@ -106,8 +103,8 @@ public class Packager extends Machine {
 
                     inputInv.removeItem(is);
                     if(leftover.isEmpty()){
-                        loc.getWorld().playSound(loc, Sound.BLOCK_PISTON_CONTRACT, 1.0F, 0.7F);
-                        loc.getWorld().playSound(loc, Sound.BLOCK_ANVIL_LAND, 0.5F, 1.3F);
+                        getLoc().getWorld().playSound(getLoc(), Sound.BLOCK_PISTON_CONTRACT, 1.0F, 0.7F);
+                        getLoc().getWorld().playSound(getLoc(), Sound.BLOCK_ANVIL_LAND, 0.5F, 1.3F);
                     }else{
                         inputInv.addItem(is);
                     }

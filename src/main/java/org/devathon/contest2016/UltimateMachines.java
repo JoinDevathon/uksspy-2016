@@ -47,6 +47,9 @@ public class UltimateMachines extends JavaPlugin {
 
     //Gave up on trying to do this with reflection
     public Machine getMachine(String type, UUID uuid, Location loc, List<Block> blocks){
+        String[] split = type.split("\\.");
+        type = split[split.length - 1];
+
         if(type.equalsIgnoreCase("packager")){
             return new Packager(uuid, loc, blocks);
         }else if(type.equalsIgnoreCase("unpacker")){
