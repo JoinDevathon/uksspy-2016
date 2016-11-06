@@ -26,7 +26,7 @@ This machine does the exact opposite of the Packager: it turns blocks back into 
 ![Recipe](http://i.imgur.com/zEUHVW1.png)
 
 ### Drainer
-![Drainer](http://i.imgur.com/iAfrKAj.png)
+![Drainer](http://i.imgur.com/pszUy3s.png)
 
 ---
 This machine empties potions and water bottles and turns them into empty bottles
