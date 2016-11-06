@@ -17,6 +17,8 @@ public class CraftingRecipes {
     public void setupRecipes(){
         addPackagerRecipe();
         addUnpackerRecipe();
+        addDrainerRecipe();
+        addIncubatorRecipe();
     }
 
     private void addPackagerRecipe(){
@@ -51,6 +53,46 @@ public class CraftingRecipes {
         recipe.setIngredient('I', Material.IRON_BLOCK);
         recipe.setIngredient('H', Material.HOPPER);
         recipe.setIngredient('P', Material.PISTON_STICKY_BASE);
+        recipe.setIngredient('D', Material.DISPENSER);
+
+        plugin.getServer().addRecipe(recipe);
+
+    }
+
+    private void addDrainerRecipe(){
+        ItemStack result = new ItemStack(Material.IRON_INGOT, 1);
+        ItemMeta im = result.getItemMeta();
+        im.setDisplayName(ChatColor.BLUE + "Drainer");
+        result.setItemMeta(im);
+
+        ShapedRecipe recipe = new ShapedRecipe(result);
+
+        recipe.shape("BHB","ISI","BDB");
+
+        recipe.setIngredient('B', Material.BUCKET);
+        recipe.setIngredient('I', Material.IRON_BLOCK);
+        recipe.setIngredient('H', Material.HOPPER);
+        recipe.setIngredient('S', Material.SPONGE);
+        recipe.setIngredient('D', Material.DISPENSER);
+
+        plugin.getServer().addRecipe(recipe);
+
+    }
+
+    private void addIncubatorRecipe(){
+        ItemStack result = new ItemStack(Material.IRON_INGOT, 1);
+        ItemMeta im = result.getItemMeta();
+        im.setDisplayName(ChatColor.BLUE + "Incubator");
+        result.setItemMeta(im);
+
+        ShapedRecipe recipe = new ShapedRecipe(result);
+
+        recipe.shape("GHG","dBd","GDG");
+
+        recipe.setIngredient('G', Material.GLASS);
+        recipe.setIngredient('d', Material.DIAMOND);
+        recipe.setIngredient('H', Material.HOPPER);
+        recipe.setIngredient('B', Material.BEACON);
         recipe.setIngredient('D', Material.DISPENSER);
 
         plugin.getServer().addRecipe(recipe);

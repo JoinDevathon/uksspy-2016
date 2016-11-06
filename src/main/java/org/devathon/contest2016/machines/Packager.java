@@ -68,6 +68,7 @@ public class Packager extends Machine {
 
         b.setType(Material.DISPENSER);
         outputInv = ((Dispenser) b.getState()).getInventory();
+        b.setData((byte) 1);
         addBlock(b);
 
         b = b.getRelative(BlockFace.UP);

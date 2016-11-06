@@ -87,4 +87,20 @@ public abstract class Machine {
         }
         return room >= itemStack.getAmount();
     }
+
+    public void removeItemsFuzzy(Inventory inv, Material type, int amount) {
+        for (ItemStack is : inv.getContents()) {
+            if (is != null && is.getType() == type) {
+                int newAmount = is.getAmount() - amount;
+                if (newAmount > 0) {
+                    is.setAmount(newAmount);
+                    break;
+                } else {
+                    inv.remove(is);
+                    amount = -newAmount;
+                    if (amount == 0) break;
+                }
+            }
+        }
+    }
 }
