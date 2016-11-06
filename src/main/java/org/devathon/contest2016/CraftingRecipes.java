@@ -19,6 +19,7 @@ public class CraftingRecipes {
         addUnpackerRecipe();
         addDrainerRecipe();
         addIncubatorRecipe();
+        addLavaGeneratorRecipe();
     }
 
     private void addPackagerRecipe(){
@@ -93,6 +94,26 @@ public class CraftingRecipes {
         recipe.setIngredient('d', Material.DIAMOND);
         recipe.setIngredient('H', Material.HOPPER);
         recipe.setIngredient('B', Material.BEACON);
+        recipe.setIngredient('D', Material.DISPENSER);
+
+        plugin.getServer().addRecipe(recipe);
+
+    }
+
+    private void addLavaGeneratorRecipe(){
+        ItemStack result = new ItemStack(Material.IRON_INGOT, 1);
+        ItemMeta im = result.getItemMeta();
+        im.setDisplayName(ChatColor.BLUE + "Lava Generator");
+        result.setItemMeta(im);
+
+        ShapedRecipe recipe = new ShapedRecipe(result);
+
+        recipe.shape("OHO","mMm","ODO");
+
+        recipe.setIngredient('O', Material.OBSIDIAN);
+        recipe.setIngredient('m', Material.MAGMA_CREAM);
+        recipe.setIngredient('H', Material.HOPPER);
+        recipe.setIngredient('M', Material.MAGMA);
         recipe.setIngredient('D', Material.DISPENSER);
 
         plugin.getServer().addRecipe(recipe);

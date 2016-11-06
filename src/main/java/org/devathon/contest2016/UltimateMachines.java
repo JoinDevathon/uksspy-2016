@@ -4,10 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.devathon.contest2016.machines.Drainer;
-import org.devathon.contest2016.machines.Incubator;
-import org.devathon.contest2016.machines.Packager;
-import org.devathon.contest2016.machines.Unpacker;
+import org.devathon.contest2016.machines.*;
 import org.devathon.contest2016.storage.MachineLoader;
 
 import java.util.ArrayList;
@@ -42,6 +39,7 @@ public class UltimateMachines extends JavaPlugin {
         machinesTypes.add(new Unpacker());
         machinesTypes.add(new Drainer());
         machinesTypes.add(new Incubator());
+        machinesTypes.add(new LavaGenerator());
     }
 
     private void machineTask(){
@@ -64,6 +62,8 @@ public class UltimateMachines extends JavaPlugin {
             return new Drainer(uuid, loc, blocks);
         }else if(type.equalsIgnoreCase("incubator")){
             return new Incubator(uuid, loc, blocks);
+        }else if(type.equalsIgnoreCase("lavagenerator")){
+            return new LavaGenerator(uuid, loc, blocks);
         }
 
         return null;
