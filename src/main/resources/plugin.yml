@@ -4,4 +4,8 @@ version: 1.0.0
 author: uksspy
 
 main: org.devathon.contest2016.UltimateMachines
-
+commands:
+  ultimatemachines:
+    description: Main command for UltimateMachines
+    usage: /ultimatemachines get <machine_name>
+    aliases: [um, machines]

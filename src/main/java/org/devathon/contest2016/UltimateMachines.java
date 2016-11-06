@@ -1,8 +1,15 @@
 package org.devathon.contest2016;
 
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.devathon.contest2016.machines.*;
 import org.devathon.contest2016.storage.MachineLoader;
@@ -32,6 +39,47 @@ public class UltimateMachines extends JavaPlugin {
         machineLoader = new MachineLoader(this);
 
         machineTask();
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if(command.getName().equalsIgnoreCase("ultimatemachines")){
+            if(args.length >= 1){
+                if(args[0].equalsIgnoreCase("get")){
+                    if(sender instanceof Player){
+                        Player player = (Player) sender;
+                        if(player.hasPermission("ultimatemachines.get")){
+                            if(args.length == 2){
+
+                                String machineStr = args[1];
+                                for(Machine machine : machinesTypes){
+                                    if(machine.getName().equalsIgnoreCase(machineStr)){
+
+                                        ItemStack itemStack = new ItemStack(Material.IRON_INGOT, 1);
+                                        ItemMeta im = itemStack.getItemMeta();
+                                        im.setDisplayName(ChatColor.BLUE + machine.getName());
+                                        itemStack.setItemMeta(im);
+
+                                        player.getInventory().addItem(itemStack);
+                                        player.sendMessage(ChatColor.GREEN + "Gave you a " + machine.getName());
+                                        return true;
+                                    }
+                                }
+                                player.sendMessage(ChatColor.RED + "There is no machine with the name " + machineStr);
+
+                            }else{
+                                player.sendMessage(ChatColor.RED + "Usage: /" + label + " get <machine_name>");
+                            }
+                        }else{
+                            player.sendMessage(ChatColor.RED + "You do not have the permission to use this command");
+                        }
+                    }else{
+                        sender.sendMessage(ChatColor.RED + "This command must be executed by a player.");
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private void setupMachineTypes(){

@@ -36,7 +36,7 @@ public class LavaGenerator extends Machine{
      * General constructor to be used to store the machines in the Plugin instance
      */
     public LavaGenerator(){
-        name = "Lava Generator";
+        name = "LavaGenerator";
     }
 
     public LavaGenerator(UUID uuid, Location loc){
@@ -77,7 +77,7 @@ public class LavaGenerator extends Machine{
 
         ItemStack itemStack = new ItemStack(Material.IRON_INGOT, 1);
         ItemMeta im = itemStack.getItemMeta();
-        im.setDisplayName(ChatColor.BLUE + "Lava Generator");
+        im.setDisplayName(ChatColor.BLUE + "LavaGenerator");
         itemStack.setItemMeta(im);
         getLoc().getWorld().dropItemNaturally(getLoc(), itemStack);
     }
