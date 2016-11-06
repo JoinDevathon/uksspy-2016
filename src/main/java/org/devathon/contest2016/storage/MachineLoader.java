@@ -65,6 +65,17 @@ public class MachineLoader implements Listener {
         }
     }
 
+    /**
+     * Called on shutdown
+     */
+    public void saveMachines(){
+        for(World world : plugin.getServer().getWorlds()){
+            for(Chunk chunk : world.getLoadedChunks()){
+                saveMachinesInChunkSync(chunk);
+            }
+        }
+    }
+
     private void loadMachinesInChunk(World world, File chunkFolder){
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             for (File file : chunkFolder.listFiles()) {
@@ -118,6 +129,38 @@ public class MachineLoader implements Listener {
                 }
             }
         });
+    }
+
+    /**
+     * Sync because you can't run tasks on disable
+     * @param chunk
+     */
+    private void saveMachinesInChunkSync(Chunk chunk){
+        File chunkFolder = new File(machineFolder + File.separator + chunk.getWorld().getName() + File.separator + chunk.getX() + " " + chunk.getZ());
+
+        List<Machine> machinesInChunk = plugin.machines.stream().filter(machine -> machine.getLoc().getChunk().equals(chunk)).collect(Collectors.toList());
+        if(machinesInChunk.size() > 0) System.out.println("Saved " + machinesInChunk.size() + " machines in chunk " + chunk);
+        plugin.machines.removeAll(machinesInChunk);
+
+        for(Machine machine : machinesInChunk){
+            File file = new File(chunkFolder + File.separator + machine.getUuid() + ".yml");
+            YamlConfiguration conf = YamlConfiguration.loadConfiguration(file);
+
+            conf.set("type", machine.getClass().getName());
+
+            conf.set("location.x", machine.getLoc().getBlockX());
+            conf.set("location.y", machine.getLoc().getBlockY());
+            conf.set("location.z", machine.getLoc().getBlockZ());
+
+            List<String> machineBlocks = machine.getBlocks().stream().map(b -> StorageUtil.sterilizeLocation(b.getLocation())).collect(Collectors.toList());
+            conf.set("machineBlocks", machineBlocks);
+
+            try {
+                conf.save(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

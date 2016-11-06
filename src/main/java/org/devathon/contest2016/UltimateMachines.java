@@ -17,6 +17,8 @@ public class UltimateMachines extends JavaPlugin {
 
     private int tick = 0;
     private CraftingRecipes craftingRecipes;
+    private MachineLoader machineLoader;
+
     public List<Machine> machinesTypes = new ArrayList<>();
     public List<Machine> machines =  new ArrayList<>();
 
@@ -28,7 +30,7 @@ public class UltimateMachines extends JavaPlugin {
         setupMachineTypes();
 
         new ListenerClass(this);
-        new MachineLoader(this);
+        machineLoader = new MachineLoader(this);
 
         machineTask();
     }
@@ -61,6 +63,7 @@ public class UltimateMachines extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        machineLoader.saveMachines();
     }
 
 }
